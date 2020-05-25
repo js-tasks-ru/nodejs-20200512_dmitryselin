@@ -49,6 +49,7 @@ server.on('request', (req, res) => {
       req.on('end', () => {
         res.statusCode = 201;
         res.end();
+        writeStream.end();
       });
 
       break;
