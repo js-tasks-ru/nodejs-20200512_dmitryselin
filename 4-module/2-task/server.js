@@ -36,9 +36,9 @@ server.on('request', (req, res) => {
         const newCounterValue = counter + chunk.length;
 
         if (newCounterValue > FILE_SIZE_LIMIT) {
+          fs.unlink(filepath, () => {});
           res.statusCode = 413;
           res.end();
-          fs.unlink(filepath, () => {});
         } else {
           writeStream.write(chunk);
           counter = newCounterValue;
@@ -47,14 +47,15 @@ server.on('request', (req, res) => {
 
       req.on('close', () => {
         if (!req.readableEnded) {
+          writeStream.end();
           fs.unlink(filepath, () => {});
         }
       });
 
-      req.on('end', () => {
+      req.on('end', (chunk) => {
+        writeStream.end(chunk);
         res.statusCode = 201;
         res.end();
-        writeStream.end();
       });
 
       break;
