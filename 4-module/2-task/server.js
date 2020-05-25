@@ -8,7 +8,8 @@ const FILE_SIZE_LIMIT = 1024 * 1024;
 
 server.on('request', (req, res) => {
   const pathname = url.parse(req.url).pathname.slice(1);
-  const filepath = path.join(__dirname, 'files', pathname);
+  const filedir = path.join(__dirname, 'files');
+  const filepath = path.join(filedir, pathname);
 
   switch (req.method) {
     case 'POST':
@@ -22,6 +23,10 @@ server.on('request', (req, res) => {
         res.statusCode = 409;
         res.end();
         break;
+      }
+
+      if (!fs.existsSync(filedir) || !fs.statSync(filedir).isDirectory()) {
+        fs.mkdirSync(filedir);
       }
 
       const writeStream = fs.createWriteStream(filepath);
