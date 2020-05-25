@@ -36,7 +36,7 @@ server.on('request', (req, res) => {
         const newCounterValue = counter + chunk.length;
 
         if (newCounterValue > FILE_SIZE_LIMIT) {
-          fs.unlink(filepath, () => {});
+          fs.unlinkSync(filepath);
           res.statusCode = 413;
           res.end();
         } else {
@@ -48,7 +48,7 @@ server.on('request', (req, res) => {
       req.on('close', () => {
         if (!req.readableEnded) {
           writeStream.end();
-          fs.unlink(filepath, () => {});
+          fs.unlinkSync(filepath);
         }
       });
 
