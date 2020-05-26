@@ -46,7 +46,7 @@ server.on('request', (req, res) => {
       });
 
       req.on('close', () => {
-        if (!req.readableEnded) {
+        if (req.aborted) {
           writeStream.end();
           fs.unlinkSync(filepath);
         }
