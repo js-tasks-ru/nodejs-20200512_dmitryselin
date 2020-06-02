@@ -8,16 +8,14 @@ const transformProduct = (product) => {
   return newProduct;
 };
 
-module.exports.productsByQuery = async function productsByQuery(ctx, next) {
+module.exports.productsByQuery = async function productsByQuery(ctx) {
   const query = ctx.query.query;
-  console.log('query: ', query);
 
   const products = await Product.find({
     $text: {
       $search: query,
     },
   });
-  console.log(products);
 
   ctx.body = {
     products: products.map((product) => transformProduct(product)),
