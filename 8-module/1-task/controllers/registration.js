@@ -45,6 +45,6 @@ module.exports.confirm = async (ctx, next) => {
   user.verificationToken = undefined;
   await user.save();
 
-  const token = uuid();
+  const token = await ctx.login(user);
   ctx.body = {token};
 };
