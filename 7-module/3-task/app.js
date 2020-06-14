@@ -54,7 +54,7 @@ router.use(async (ctx, next) => {
   const token = header.split(' ')[1];
   if (!token) return next();
 
-  const session = await Session.findOne({token: 'token'}).populate('user');
+  const session = await Session.findOne({token}).populate('user');
   if (!session) {
     const error = new Error();
     error.status = 401;
