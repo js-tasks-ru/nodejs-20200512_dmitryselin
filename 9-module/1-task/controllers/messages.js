@@ -4,7 +4,7 @@ module.exports.messageList = async function messages(ctx, next) {
   const messages = await Message.find({
     user: ctx.user.displayName,
   }).sort({
-    _id: -1,
+    date: -1,
   }).limit(20);
 
   ctx.body = {
